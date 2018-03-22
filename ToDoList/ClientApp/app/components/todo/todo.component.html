@@ -1,0 +1,61 @@
+<h1>My Todo List</h1>
+<div class="panel panel-primary">
+    <div class="panel-heading">Items</div>
+    <div class="panel-body">
+        <div class="pull-righ float-right" style="text-align: right">
+            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" (click)="addNewItem()">New item</button>
+        </div>
+        <p *ngIf="!list"><em>Loading...</em></p>
+        <table class='table' *ngIf="list">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Created On</th>
+                    <th>Done</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of list">
+                    <td><a href="#" data-toggle="modal" data-target="#myModal" (click)="edit(item)">{{ item.Title }}</a></td>
+                    <td>{{ item.Description }}</td>
+                    <td>{{ item.CreatedOn }}</td>
+                    <td><input type="checkbox" [checked]="item.IsCompleted" [disabled]="item.IsCompleted" (click)="markAsDone(item)"></td>
+                    <td><button type="button" class="btn btn-danger" (click)="delete(item.UniqueID)">X</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{{ popupTitle }}</h4>
+            </div>
+            <form name="todoform" data-toggle="validator" role="form">
+                <div class="modal-body">
+                    <input type="hidden" [(ngModel)]="editItem.UniqueID" name="uniqueID" />
+                    <div class="form-group" [ngClass]="{'has-error' : modelState.TitleRequired}">
+                        <label for="titleInput">Title</label>
+                        <input type="text" class="form-control" id="titleInput" [(ngModel)]="editItem.Title" name="title" required>
+                        <small class="form-text text-muted" *ngIf="modelState.TitleRequired"><code>* Title is required!</code></small>
+                    </div>
+                    <div class="form-group" [ngClass]="{'has-error' : modelState.DescriptionRequired}">
+                        <label for="descInput">Description</label>
+                        <textarea class="form-control" id="descInput" [(ngModel)]="editItem.Description" name="description" required></textarea>
+                        <small class="form-text text-muted" *ngIf="modelState.DescriptionRequired"><code>* Description is required!</code></small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" (click)="save()">Save</button>
+                    <i style="display: none"  data-dismiss="modal" #closeBtn></i>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
