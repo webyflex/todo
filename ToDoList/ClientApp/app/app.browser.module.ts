@@ -17,5 +17,5 @@ export class AppModule {
 }
 
 export function getBaseUrl() {
-    return 'https://to-do-app.azurewebsites.net/';
+    return 'https://todo-manual.azurewebsites.net/';
 }
